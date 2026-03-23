@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "Bill Splitter",
+    "slug": "bill-splitter",
+    "scheme": "bill-splitter",
+    "version": "1.0.0",
+    "main": "expo-router/entry",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": { "supportsTablet": false },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Bill Splitter to access your photos.",
+          "cameraPermission": "We need camera access to scan your receipt."
+        }
+      ]
+    ]
+  }
+}

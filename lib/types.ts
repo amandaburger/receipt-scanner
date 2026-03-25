@@ -13,3 +13,5 @@ export interface Participant {
 
 // covers[coveredId] = covererId — display-only, not used in calculations
 export type CoverMap = Record<string, string>;
+
+export type TipMode = 'proportional' | 'even';

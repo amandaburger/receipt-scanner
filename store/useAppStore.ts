@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 const nanoid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36);
-import type { Item, Participant, CoverMap } from '../lib/types';
+import type { Item, Participant, CoverMap, TipMode } from '../lib/types';
 
 interface AppState {
   items: Item[];
@@ -9,6 +9,7 @@ interface AppState {
   participants: Participant[];
   assigned: Record<string, Set<string>>; // assigned[participantId] = Set<itemId>
   covers: CoverMap;
+  tipMode: TipMode;
   currentStep: 1 | 2 | 3 | 4 | 5 | 6;
 
   setItems: (items: Item[]) => void;
@@ -22,6 +23,7 @@ interface AppState {
   toggleAssignment: (participantId: string, itemId: string) => void;
   splitEvenly: () => void;
   setCover: (coveredId: string, covererId: string | null) => void;
+  setTipMode: (mode: TipMode) => void;
   setStep: (step: AppState['currentStep']) => void;
   reset: () => void;
 }
@@ -33,6 +35,7 @@ const initialState = {
   participants: [],
   assigned: {},
   covers: {},
+  tipMode: 'proportional' as TipMode,
   currentStep: 1 as const,
 };
 
@@ -116,6 +119,8 @@ export const useAppStore = create<AppState>((set, get) => ({
       }
       return { covers };
     }),
+
+  setTipMode: (tipMode) => set({ tipMode }),
 
   setStep: (step) => set({ currentStep: step }),
 

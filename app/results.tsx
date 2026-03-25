@@ -6,16 +6,17 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { ProgressStepper } from '../components/ProgressStepper';
+import { BackHint } from '../components/BackHint';
 import { useAppStore } from '../store/useAppStore';
 import { calculateSplit } from '../lib/calculateSplit';
 import type { PersonResult } from '../lib/calculateSplit';
 
 export default function ResultsScreen() {
-  const { items, participants, assigned, tax, tip, covers, setCover, reset, setStep } = useAppStore();
+  const { items, participants, assigned, tax, tip, tipMode, covers, setCover, reset, setStep } = useAppStore();
   const [expanded, setExpanded] = useState<string | null>(null);
   const [coverModal, setCoverModal] = useState<string | null>(null);
 
-  const results = calculateSplit(items, participants, assigned, tax, tip);
+  const results = calculateSplit(items, participants, assigned, tax, tip, tipMode);
   const grandTotal = results.reduce((sum, r) => sum + getDisplayTotal(r), 0);
 
   function getDisplayTotal(r: PersonResult): number {
@@ -79,6 +80,7 @@ export default function ResultsScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ProgressStepper current={6} />
+      <BackHint />
       <FlatList
         data={results}
         keyExtractor={r => r.participant.id}

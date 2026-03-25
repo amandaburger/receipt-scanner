@@ -2,17 +2,19 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import React, { useState } from 'react';
 import {
   View, Text, TouchableOpacity, TextInput,
-  StyleSheet
+  Switch, StyleSheet
 } from 'react-native';
 import { router } from 'expo-router';
 import { ProgressStepper } from '../components/ProgressStepper';
+import { BackHint } from '../components/BackHint';
 import { useAppStore } from '../store/useAppStore';
 import { getSubtotal } from '../lib/calculateSplit';
 
 const TIP_PRESETS = [15, 18, 20, 25];
 
 export default function TipScreen() {
-  const { items, setTip, setStep } = useAppStore();
+  const { items, setTip, setTipMode, setStep } = useAppStore();
+  const tipMode = useAppStore(s => s.tipMode);
   const liveTip = useAppStore(s => s.tip);
   const subtotal = getSubtotal(items);
   const [customPct, setCustomPct] = useState('');
@@ -47,6 +49,7 @@ export default function TipScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ProgressStepper current={5} />
+      <BackHint />
       <View style={styles.content}>
         <Text style={styles.title}>Add a Tip?</Text>
         <Text style={styles.subtitle}>Subtotal: ${subtotal.toFixed(2)}</Text>
@@ -102,6 +105,19 @@ export default function TipScreen() {
           </TouchableOpacity>
         )}
 
+        <View style={styles.splitToggle}>
+          <Text style={styles.splitLabel}>Split tip evenly</Text>
+          <Switch
+            value={tipMode === 'even'}
+            onValueChange={(v) => setTipMode(v ? 'even' : 'proportional')}
+            trackColor={{ false: '#D1D5DB', true: '#93C5FD' }}
+            thumbColor={tipMode === 'even' ? '#2563EB' : '#F3F4F6'}
+          />
+        </View>
+        <Text style={styles.splitHint}>
+          {tipMode === 'even' ? 'Tip split equally per person' : 'Tip split based on what each person ordered'}
+        </Text>
+
         <View style={styles.summary}>
           <Text style={styles.summaryText}>Tip: ${liveTip.toFixed(2)}</Text>
           {subtotal > 0 && liveTip > 0 && (
@@ -146,6 +162,13 @@ const styles = StyleSheet.create({
     width: 80, textAlign: 'right', fontSize: 16, borderBottomWidth: 1.5,
     borderColor: '#D1D5DB', paddingVertical: 4,
   },
+  splitToggle: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    backgroundColor: '#FFF', borderRadius: 10, padding: 12,
+    borderWidth: 1, borderColor: '#E5E7EB', marginTop: 4,
+  },
+  splitLabel: { fontSize: 15, fontWeight: '600', color: '#374151' },
+  splitHint: { fontSize: 13, color: '#6B7280', marginTop: 2 },
   receiptTipBtn: {
     borderWidth: 1.5, borderColor: '#D97706', borderRadius: 10,
     padding: 12, alignItems: 'center', backgroundColor: '#FFFBEB',

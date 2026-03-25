@@ -120,7 +120,6 @@ export default function ScanScreen() {
           <Image source={{ uri: imageUri }} style={styles.preview} />
         ) : (
           <View style={styles.placeholder}>
-            <Text style={styles.placeholderText}>📷</Text>
             <Text style={styles.placeholderLabel}>No image selected</Text>
           </View>
         )}
@@ -162,8 +161,7 @@ const styles = StyleSheet.create({
     width: '100%', height: 220, borderRadius: 12, backgroundColor: '#E5E7EB',
     alignItems: 'center', justifyContent: 'center', marginVertical: 8,
   },
-  placeholderText: { fontSize: 48 },
-  placeholderLabel: { fontSize: 14, color: '#9CA3AF', marginTop: 8 },
+  placeholderLabel: { fontSize: 14, color: '#9CA3AF' },
   btnPrimary: {
     width: '100%', backgroundColor: '#2563EB', padding: 16,
     borderRadius: 12, alignItems: 'center',

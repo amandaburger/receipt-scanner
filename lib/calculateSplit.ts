@@ -1,4 +1,4 @@
-import type { Item, Participant } from './types';
+import type { Item, Participant, TipMode } from './types';
 
 export interface PersonResult {
   participant: Participant;
@@ -28,7 +28,8 @@ export function calculateSplit(
   participants: Participant[],
   assigned: Record<string, Set<string>>,
   totalTax: number,
-  totalTip: number
+  totalTip: number,
+  tipMode: TipMode = 'proportional'
 ): PersonResult[] {
   const totalSubtotal = getSubtotal(items);
   if (totalSubtotal === 0) return participants.map((p) => ({
@@ -48,7 +49,9 @@ export function calculateSplit(
     const subtotal = myItems.reduce((sum, x) => sum + x.amount, 0);
     const ratio = subtotal / totalSubtotal;
     const tax = totalTax * ratio;
-    const tip = totalTip * ratio;
+    const tip = tipMode === 'even'
+      ? totalTip / participants.length
+      : totalTip * ratio;
 
     return { participant: p, items: myItems, subtotal, tax, tip, total: subtotal + tax + tip };
   });

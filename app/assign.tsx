@@ -7,6 +7,7 @@ import {
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { ProgressStepper } from '../components/ProgressStepper';
+import { BackHint } from '../components/BackHint';
 import { PersonChip } from '../components/PersonChip';
 import { ItemRow } from '../components/ItemRow';
 import { UndoSnackbar } from '../components/UndoSnackbar';
@@ -14,7 +15,7 @@ import { useAppStore } from '../store/useAppStore';
 import { calculateSplit, getUnassignedItems } from '../lib/calculateSplit';
 
 export default function AssignScreen() {
-  const { items, participants, assigned, tax, tip, toggleAssignment, splitEvenly, setStep } = useAppStore();
+  const { items, participants, assigned, tax, tip, tipMode, toggleAssignment, splitEvenly, setStep } = useAppStore();
   const [selectedPersonId, setSelectedPersonId] = useState(participants[0]?.id ?? '');
   const [snackbar, setSnackbar] = useState<{ message: string; undo: () => void } | null>(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -24,7 +25,7 @@ export default function AssignScreen() {
   const canProceed = unassigned.length === 0;
   const selectedPerson = participants.find(p => p.id === selectedPersonId);
 
-  const splitResults = calculateSplit(items, participants, assigned, tax, tip);
+  const splitResults = calculateSplit(items, participants, assigned, tax, tip, tipMode);
   const personTotal = splitResults.find(r => r.participant.id === selectedPersonId)?.subtotal ?? 0;
 
   function handleToggle(itemId: string) {
@@ -53,6 +54,7 @@ export default function AssignScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ProgressStepper current={4} />
+      <BackHint />
 
       <View style={styles.header}>
         <Text style={styles.title}>Assign Items</Text>

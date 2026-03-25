@@ -7,6 +7,7 @@ import {
 import { Swipeable } from 'react-native-gesture-handler';
 import { router } from 'expo-router';
 import { ProgressStepper } from '../components/ProgressStepper';
+import { BackHint } from '../components/BackHint';
 import { useAppStore } from '../store/useAppStore';
 
 export default function ParticipantsScreen() {
@@ -29,6 +30,7 @@ export default function ParticipantsScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ProgressStepper current={3} />
+      <BackHint />
       <View style={styles.content}>
         <Text style={styles.title}>Who's splitting?</Text>
         <Text style={styles.subtitle}>Add everyone at the table (min. 2)</Text>

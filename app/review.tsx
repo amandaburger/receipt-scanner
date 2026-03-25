@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { ProgressStepper } from '../components/ProgressStepper';
+import { BackHint } from '../components/BackHint';
 import { useAppStore } from '../store/useAppStore';
 import { getSubtotal } from '../lib/calculateSplit';
 
@@ -49,6 +50,7 @@ export default function ReviewScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ProgressStepper current={2} />
+      <BackHint />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}

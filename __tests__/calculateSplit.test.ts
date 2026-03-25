@@ -55,6 +55,13 @@ describe('calculateSplit', () => {
     expect(result.find(r => r.participant.id === 'p2')!.tip).toBeCloseTo(0.80);
   });
 
+  it('distributes tip evenly when tipMode is even', () => {
+    const assigned = { p1: new Set(['i1']), p2: new Set(['i2']) };
+    const result = calculateSplit([burger, fries], [alice, bob], assigned, 0, 3.20, 'even');
+    expect(result.find(r => r.participant.id === 'p1')!.tip).toBeCloseTo(1.60);
+    expect(result.find(r => r.participant.id === 'p2')!.tip).toBeCloseTo(1.60);
+  });
+
   it('applies penny correction so totals sum to receipt total', () => {
     const steak: Item = { id: 'i3', name: 'Steak', quantity: 1, price: 10.00, confidence: 1 };
     const items = [steak];
